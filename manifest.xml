@@ -1,0 +1,17 @@
+<package>
+  <description brief="This package uses a point cloud and position information to build a map of the robot environment. It can be configured to determine which obstacles and slopes are not traversable">
+  This package uses a point cloud and position information to build a map of the robot environment. It can be configured to determine which obstacles and slopes are not traversable
+  </description>
+  <author>Marco Pagnamenta/marco.pagnamenta@esa.int</author>
+  <license></license>
+  <url>http://</url>
+  <logo>http://</logo>
+  <depend package="base/cmake" />
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+</package>
