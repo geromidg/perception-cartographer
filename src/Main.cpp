@@ -1,10 +1,10 @@
 #include <iostream>
-#include <cartographer/Dummy.hpp>
+//#include <cartographer/cartographer.hpp>
 
 int main(int argc, char** argv)
 {
-    cartographer::DummyClass dummyClass;
-    dummyClass.welcome();
+  //  cartographer::LocalMap amap;
+   // amap.welcome();
 
     return 0;
 }

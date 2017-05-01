@@ -7,6 +7,12 @@
   <url>http://</url>
   <logo>http://</logo>
   <depend package="base/cmake" />
+  <depend package="opencv"/>
+  <depend package="base/types"/>
+  <depend package="image_processing/frame_helper"/>
+  <depend package="slam/envire"/>
+  <depend package="slam/pcl"/>
+  <depend package="gui/vizkit3d" optional="1"/>
   <!--
    To add any dependencies use the depend tag
   <depend package="dummy-dependency-0" />
