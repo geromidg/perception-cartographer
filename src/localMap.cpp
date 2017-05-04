@@ -256,6 +256,24 @@ void LocalMap::pointCloud2heightMap()
         height_map_bin_count[index_x][index_y]++;
     }
     
+    // AD HOC	
+    // The disparity has a tendency to create weird edges on the left side, 
+    // so remove 2 pixels on the right side of this projection for each row
+    for(int nRow = 0; nRow < height_map.rows; nRow++)
+    {
+		for(int nCol = height_map.cols-1; nCol >= 0; nCol--)
+		{
+			if(height_map.at<float>(nRow, nCol) == height_map.at<float>(nRow, nCol)) // that means it isnt nan
+			{
+				height_map.at<float>(nRow, nCol) = std::numeric_limits<float>::quiet_NaN();
+				height_map.at<float>(nRow, nCol-1) = std::numeric_limits<float>::quiet_NaN();
+				std::cout << nCol << " " << nRow << " " << height_map.at<float>(nRow, nCol) << std::endl;
+				break;
+			}
+		}
+	}
+		
+        
      // keep original mask
     height_map_mask = cv::Mat(height_map == height_map);
     // replace nan values with 0 *todo check if necessary)
