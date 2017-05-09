@@ -267,7 +267,6 @@ void LocalMap::pointCloud2heightMap()
 			{
 				height_map.at<float>(nRow, nCol) = std::numeric_limits<float>::quiet_NaN();
 				height_map.at<float>(nRow, nCol-1) = std::numeric_limits<float>::quiet_NaN();
-				std::cout << nCol << " " << nRow << " " << height_map.at<float>(nRow, nCol) << std::endl;
 				break;
 			}
 		}
@@ -504,10 +503,10 @@ cv::Mat LocalMap::getMask()
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr LocalMap::getPointCloud()
 {
-	return cloud_filtered_p;
+	return cloud_input_p;
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr LocalMap::getPointCloudFiltered()
 {
-	return cloud_input_p;
+	return cloud_filtered_p;
 }
