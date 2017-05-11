@@ -380,6 +380,7 @@ void LocalMap::detectObstacles(float height_threshold)
     cv::Laplacian(height_map_interpolated, interpLaplacian, CV_32FC1, laplacian_kernel_size);
 
     // Mask the laplacian to remove invalid interpolated data
+    height_map_laplacian.setTo(0);
     interpLaplacian.copyTo(height_map_laplacian, height_map_mask);
 
     // The obstacle map is based on the laplacien image and a threshold defines probably obstacles
