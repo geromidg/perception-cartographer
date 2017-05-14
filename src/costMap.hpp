@@ -14,7 +14,7 @@ namespace cartographer
         public: 
 			CostMap();
 			void setMapParameters(float size, float resolution);
-			void setObstacleDilation(int kernel_size, int iterations);
+			void setObstacleDilation(float robot_size, int iterations);
 			void setMapBlurring(int kernel_size, float max_cost);
 			void setAdditionalSlopePenalty(float max_slope, float max_cost);
 			void setCostConstants(float cost_base, float cost_offset, float cost_max);

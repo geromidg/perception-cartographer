@@ -31,7 +31,7 @@ namespace cartographer
             // parameters setters
             void setCameraParameters(int width, int height, float cx, float cy, float fx, float fy);
             void setMapParameters(float size, float resolution, int scale);
-            void setPcFiltersParameters(float leaf_size, int k_points);
+            void setPcFiltersParameters(float leaf_size, int k_points, bool use_statistical_filter);
             void setPcLimitsParameters(Eigen::Vector4f min, Eigen::Vector4f max);
 			void setPointCloud(std::vector<float> pc_vector);
             void setObstacleLaplacian(int kernel_size, float threshold);
@@ -95,6 +95,7 @@ namespace cartographer
 			Eigen::Vector4f	filter_box_min, filter_box_max;
 			pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered_p;
 			pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_input_p;
+			bool use_statistical_filter;
 			
 			// Obstacle laplacian parameters
 			int laplacian_kernel_size;
