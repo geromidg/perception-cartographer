@@ -21,8 +21,10 @@ void CostMap::setMapParameters(float size, float resolution)
 	cost_map = cv::Scalar(std::numeric_limits<float>::quiet_NaN());	
 }
 
-void CostMap::setObstacleDilation(int kernel_size, int iterations)
+void CostMap::setObstacleDilation(float robot_size, int iterations)
 {
+	// kernel size is dependant on map resolution and robot width
+	int kernel_size = (int)(robot_size/histogram_resolution) + 1;
 	dilation_kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE,
 											cv::Size(kernel_size,kernel_size)); // round kernel;
 	dilation_iterations = iterations;

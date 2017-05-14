@@ -69,10 +69,11 @@ void LocalMap::setCameraParameters(int width, int height, float cx, float cy, fl
 	camera_set = 1;
 }
 
-void LocalMap::setPcFiltersParameters(float leaf_size, int k_points)
+void LocalMap::setPcFiltersParameters(float leaf_size, int k_points, bool use_statistical_filter)
 {
 	filter_leaf_size = leaf_size;
 	filter_k_points = k_points;
+	this->use_statistical_filter = use_statistical_filter;
 }
 
 void LocalMap::setPcLimitsParameters(Eigen::Vector4f min, Eigen::Vector4f max)
@@ -145,12 +146,14 @@ void LocalMap::pointColudFiltering()
 	//ms[2] = tp.tv_sec * 1000 + tp.tv_usec / 1000; //get current timestamp in milliseconds
 
     // Apply statistical filter
-    pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-    sor.setInputCloud(cloud_filtered_p);
-    sor.setMeanK(filter_k_points);
-    sor.setStddevMulThresh(1.0);
-    sor.filter(*cloud_filtered_p);
-    
+    if(use_statistical_filter)
+    {
+		pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+		sor.setInputCloud(cloud_filtered_p);
+		sor.setMeanK(filter_k_points);
+		sor.setStddevMulThresh(1.0);
+		sor.filter(*cloud_filtered_p);
+    }
     //gettimeofday(&tp, NULL);
 	//ms[3] = tp.tv_sec * 1000 + tp.tv_usec / 1000; //get current timestamp in milliseconds
 	
@@ -324,6 +327,52 @@ void LocalMap::heightMapInterpolate()
                     // Evaluate the linear interpolation
                     fraction = (float)(p - start_index) / (float)(end_index - start_index);
                     height_map_interpolated.at<float>(p, column) = (start_value * (1.0f - fraction) + end_value * fraction);
+                }
+                start_index = -1;
+                end_index = -1;
+            }
+
+            // Save the values for next iteration
+            value_previous = value;
+        }
+    }
+    
+    //same along the other direction to prevent approximation errors when the image is taken with a ptu
+    for(row = 0; row < height_map.rows; row++)
+    {
+        value_previous = 0.0f;
+        start_index = 0;
+        end_index = 0;
+
+        for(column = 0; column < height_map.cols; column++)
+        {
+            // Get the pixel value in the matrix
+            value = height_map_interpolated.at<float>(row, column);
+
+            if(column == 0 && value == 0.0f)
+            {
+                // First value in row is missing, assign 0.0f for start
+                start_index = 0;
+                start_value = 0.0f;
+            }
+            else if(start_index == -1 && value == 0.0f && value_previous != 0.0f)
+            {
+                // Start of the missing data is the previous cell
+                start_index = column - 1;
+                start_value = value_previous;
+            }
+            else if((value != 0.0f && value_previous == 0.0f) || (value == 0.0f && column == height_map.cols - 1 && start_index != -1))
+            {
+                // End of the missing data
+                end_index = column;
+                end_value = value;
+
+                // Interpolate
+                for(p = start_index; p <= end_index; p++)
+                {
+                    // Evaluate the linear interpolation
+                    fraction = (float)(p - start_index) / (float)(end_index - start_index);
+                    height_map_interpolated.at<float>(row, p) = (start_value * (1.0f - fraction) + end_value * fraction);
                 }
                 start_index = -1;
                 end_index = -1;
