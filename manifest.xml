@@ -10,14 +10,5 @@
   <depend package="opencv"/>
   <depend package="base/types"/>
   <depend package="image_processing/frame_helper"/>
-  <depend package="slam/envire"/>
   <depend package="slam/pcl"/>
-  <depend package="gui/vizkit3d" optional="1"/>
-  <!--
-   To add any dependencies use the depend tag
-  <depend package="dummy-dependency-0" />
-	...
-  <depend package="dummy-dependency-n-1" />
-  <depend package="dummy-dependency-n" />
-  -->
 </package>
