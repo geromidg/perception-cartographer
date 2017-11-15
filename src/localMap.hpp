@@ -27,7 +27,7 @@ namespace cartographer
 
         // functionality
         void distance2pointCloud(std::vector<float> distance);
-        void pointColudFiltering();
+        void pointCloudFiltering();
         void pointCloud2flatRobotReference(Eigen::Quaterniond imu_orientation,
                 Eigen::Vector3d camera_to_ptu,
                 Eigen::Quaterniond ptu_orientation,
