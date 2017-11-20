@@ -123,15 +123,15 @@ void LocalMap::pointCloudFiltering()
     cloud_filtered_p->points.resize (width*height);
 
     // remove out of bound points
-    /* pcl::CropBox<pcl::PointXYZ> cb; */
-    /* cb.setInputCloud(cloud_input_p); */
-    /* cb.setMin(filter_box_min); */
-    /* cb.setMax(filter_box_max); */
-    /* cb.filter(*cloud_filtered_p); */
+    pcl::CropBox<pcl::PointXYZ> cb;
+    cb.setInputCloud(cloud_input_p);
+    cb.setMin(filter_box_min);
+    cb.setMax(filter_box_max);
+    cb.filter(*cloud_filtered_p);
 
     // Apply filter to reduce size of the point cloud by averaging
     pcl::VoxelGrid<pcl::PointXYZ> vg;
-    vg.setInputCloud(cloud_input_p);
+    vg.setInputCloud(cloud_filtered_p);
     vg.setLeafSize(filter_leaf_size, filter_leaf_size, filter_leaf_size);
     vg.filter(*cloud_filtered_p);
 
